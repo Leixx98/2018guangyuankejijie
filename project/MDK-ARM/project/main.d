@@ -51,3 +51,4 @@ project\main.o: ..\FREERTOS\include\queue.h
 project\main.o: ..\FREERTOS\include\task.h
 project\main.o: ..\FREERTOS\include\list.h
 project\main.o: ../Inc/fft.h
+project\main.o: ../Inc/sort.h

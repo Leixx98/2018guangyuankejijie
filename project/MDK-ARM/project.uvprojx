@@ -498,6 +498,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\fft.c</FilePath>
             </File>
+            <File>
+              <FileName>sort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\sort.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

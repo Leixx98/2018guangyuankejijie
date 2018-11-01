@@ -12,6 +12,7 @@
 "project\heap_4.o"
 "project\led_task.o"
 "project\fft.o"
+"project\sort.o"
 "project\main.o"
 "project\gpio.o"
 "project\adc.o"

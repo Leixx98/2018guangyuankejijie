@@ -6,6 +6,7 @@
 #include "queue.h"
 #include "task.h"
 #include "adc.h"
+#include "sort.h"
 
 //*****************************************************************************
 
@@ -31,38 +32,32 @@ DemoFFTTask(void *pvParameters)
 		//定义fft句柄
 		arm_cfft_radix4_instance_f32 fft;
 	  arm_cfft_radix4_init_f32(&fft,1024,0,1);
-		for(i=0;i<1024;i++)
-		{
-			fft_inputbuff[2*i]=100+	
-												 10*arm_sin_f32(2*3.1415*i/1024)+
-												 30*arm_sin_f32(2*3.1415*i*4/1024)+
-												 30*arm_sin_f32(2*3.1415*i*8/1024);
-		}	
+
     while(1)
     {
-			for(i=0;i<256;i++)
+			//获得AD采样数据，并载入FFT输入数组
+			for(i=0;i<512;i++)
 			{
 				ADC1_Value=(double)((uint16_t)(ADC1_SampleValue[i]>>16));
-				ADC1_Value=ADC1_Value*3.3/4096;
-	//			fft_inputbuff[j++]=ADC1_Value;
-	//			fft_inputbuff[j++]=0;
-				printf("%d:%.2f\r\n",i,ADC1_Value);
+				ADC1_Value=ADC1_Value*3333/4096-1600;
+				fft_inputbuff[j++]=ADC1_Value;
+				fft_inputbuff[j++]=0;
 				ADC1_Value=(double)((uint16_t)ADC1_SampleValue[i]);
-				ADC1_Value=ADC1_Value*3.3/4096;
-				printf("%d:%.2f\r\n",i+1,ADC1_Value);			
-	//			fft_inputbuff[j++]=ADC1_Value;
-	//			fft_inputbuff[j++]=0;
+				ADC1_Value=ADC1_Value*3333/4096-1600;	
+				fft_inputbuff[j++]=ADC1_Value;
+				fft_inputbuff[j++]=0;
 			}
-			
+			j=0;
+			//开启FFT计算				
 			arm_cfft_radix4_f32(&fft,fft_inputbuff);
 			arm_cmplx_mag_f32(fft_inputbuff,fft_outputbuff,1024);
 			
-			for(i=0;i<1024;i++)
-			{
-				printf("%d:%f\r\n",i,fft_outputbuff[i]);
-			}
-			j=0;  
-
+//			for(i=0;i<1024;i++)
+//			{
+//				printf("%d:%.2f\r\n",i,fft_outputbuff[i]);
+//			}
+			Struct_Sort(fft_outputbuff);
+			
 			vTaskDelay(500); 
     }
 }
@@ -90,3 +85,4 @@ FFTTaskInit(void)
     
     
 }
+
